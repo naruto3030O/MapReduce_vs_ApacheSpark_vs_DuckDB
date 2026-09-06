@@ -1,0 +1,55 @@
+======================================================================
+Spark df.explain(mode='formatted') - QUERY A - all columns
+======================================================================
+== Physical Plan ==
+* Filter (3)
++- * ColumnarToRow (2)
+   +- Scan parquet  (1)
+
+
+(1) Scan parquet 
+Output [20]: [VendorID#0, tpep_pickup_datetime#1, tpep_dropoff_datetime#2, passenger_count#3L, trip_distance#4, RatecodeID#5L, store_and_fwd_flag#6, PULocationID#7, DOLocationID#8, payment_type#9L, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, Airport_fee#18, cbd_congestion_fee#19]
+Batched: true
+Location: InMemoryFileIndex [file:/C:/Users/sanja/OneDrive/Desktop/A1_student_id/data/taxi_2m.parquet]
+PushedFilters: [IsNotNull(PULocationID), IsNotNull(fare_amount), EqualTo(PULocationID,161), GreaterThan(fare_amount,30.0)]
+ReadSchema: struct<VendorID:int,tpep_pickup_datetime:timestamp_ntz,tpep_dropoff_datetime:timestamp_ntz,passenger_count:bigint,trip_distance:double,RatecodeID:bigint,store_and_fwd_flag:string,PULocationID:int,DOLocationID:int,payment_type:bigint,fare_amount:double,extra:double,mta_tax:double,tip_amount:double,tolls_amount:double,improvement_surcharge:double,total_amount:double,congestion_surcharge:double,Airport_fee:double,cbd_congestion_fee:double>
+
+(2) ColumnarToRow [codegen id : 1]
+Input [20]: [VendorID#0, tpep_pickup_datetime#1, tpep_dropoff_datetime#2, passenger_count#3L, trip_distance#4, RatecodeID#5L, store_and_fwd_flag#6, PULocationID#7, DOLocationID#8, payment_type#9L, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, Airport_fee#18, cbd_congestion_fee#19]
+
+(3) Filter [codegen id : 1]
+Input [20]: [VendorID#0, tpep_pickup_datetime#1, tpep_dropoff_datetime#2, passenger_count#3L, trip_distance#4, RatecodeID#5L, store_and_fwd_flag#6, PULocationID#7, DOLocationID#8, payment_type#9L, fare_amount#10, extra#11, mta_tax#12, tip_amount#13, tolls_amount#14, improvement_surcharge#15, total_amount#16, congestion_surcharge#17, Airport_fee#18, cbd_congestion_fee#19]
+Condition : (((isnotnull(PULocationID#7) AND isnotnull(fare_amount#10)) AND (PULocationID#7 = 161)) AND (fare_amount#10 > 30.0))
+
+
+
+======================================================================
+Spark df.explain(mode='formatted') - QUERY B - four columns
+======================================================================
+== Physical Plan ==
+* Project (4)
++- * Filter (3)
+   +- * ColumnarToRow (2)
+      +- Scan parquet  (1)
+
+
+(1) Scan parquet 
+Output [5]: [tpep_pickup_datetime#22, tpep_dropoff_datetime#23, trip_distance#25, PULocationID#28, fare_amount#31]
+Batched: true
+Location: InMemoryFileIndex [file:/C:/Users/sanja/OneDrive/Desktop/A1_student_id/data/taxi_2m.parquet]
+PushedFilters: [IsNotNull(PULocationID), IsNotNull(fare_amount), EqualTo(PULocationID,161), GreaterThan(fare_amount,30.0)]
+ReadSchema: struct<tpep_pickup_datetime:timestamp_ntz,tpep_dropoff_datetime:timestamp_ntz,trip_distance:double,PULocationID:int,fare_amount:double>
+
+(2) ColumnarToRow [codegen id : 1]
+Input [5]: [tpep_pickup_datetime#22, tpep_dropoff_datetime#23, trip_distance#25, PULocationID#28, fare_amount#31]
+
+(3) Filter [codegen id : 1]
+Input [5]: [tpep_pickup_datetime#22, tpep_dropoff_datetime#23, trip_distance#25, PULocationID#28, fare_amount#31]
+Condition : (((isnotnull(PULocationID#28) AND isnotnull(fare_amount#31)) AND (PULocationID#28 = 161)) AND (fare_amount#31 > 30.0))
+
+(4) Project [codegen id : 1]
+Output [4]: [tpep_pickup_datetime#22, tpep_dropoff_datetime#23, trip_distance#25, fare_amount#31]
+Input [5]: [tpep_pickup_datetime#22, tpep_dropoff_datetime#23, trip_distance#25, PULocationID#28, fare_amount#31]
+
+
+

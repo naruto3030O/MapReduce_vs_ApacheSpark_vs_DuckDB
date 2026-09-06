@@ -1,0 +1,30 @@
+# Raw and generated datasets - never committed (see README for how to regenerate)
+data/*
+!data/.gitkeep
+
+# Virtual environment
+.venv/
+.venv-*/
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# DuckDB persistent database files created by the CLI
+*.duckdb
+*.duckdb.wal
+
+# mrjob temporary output
+*-output/
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Submission archive
+*.zip

@@ -1,0 +1,127 @@
+======================================================================
+DuckDB EXPLAIN - QUERY A - all columns
+======================================================================
+-- AI-ASSISTED: A4
+-- Task 2 - DuckDB: Parquet filtering and projection.
+--
+-- Fixed filter: PULocationID = 161 AND fare_amount > 30.00
+--   Query A returns all columns for matching rows.
+--   Query B returns only four columns for the same rows.
+--
+-- data/taxi_2m.parquet is substituted with the input file path by duckdb/run_task2.py.
+-- To run this file directly in the DuckDB CLI, replace data/taxi_2m.parquet with the
+-- path, e.g. 'data/taxi_2m.parquet'.
+--
+-- The two queries are separated by a split marker line, which run_task2.py
+-- uses to load them individually.
+
+-- Query A: all columns
+SELECT *
+FROM read_parquet('data/taxi_2m.parquet')
+WHERE PULocationID = 161
+  AND fare_amount > 30.00;
+----------------------------------------------------------------------
+┌───────────────────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│          VendorID         │
+│    tpep_pickup_datetime   │
+│   tpep_dropoff_datetime   │
+│      passenger_count      │
+│       trip_distance       │
+│         RatecodeID        │
+│     store_and_fwd_flag    │
+│        PULocationID       │
+│        DOLocationID       │
+│        payment_type       │
+│        fare_amount        │
+│           extra           │
+│          mta_tax          │
+│         tip_amount        │
+│        tolls_amount       │
+│   improvement_surcharge   │
+│        total_amount       │
+│    congestion_surcharge   │
+│        Airport_fee        │
+│     cbd_congestion_fee    │
+│                           │
+│       ~400,000 rows       │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│        READ_PARQUET       │
+│    ────────────────────   │
+│         Function:         │
+│        READ_PARQUET       │
+│                           │
+│        Projections:       │
+│        PULocationID       │
+│        fare_amount        │
+│          VendorID         │
+│    tpep_pickup_datetime   │
+│   tpep_dropoff_datetime   │
+│      passenger_count      │
+│       trip_distance       │
+│         RatecodeID        │
+│     store_and_fwd_flag    │
+│        DOLocationID       │
+│        payment_type       │
+│           extra           │
+│          mta_tax          │
+│         tip_amount        │
+│        tolls_amount       │
+│   improvement_surcharge   │
+│        total_amount       │
+│    congestion_surcharge   │
+│        Airport_fee        │
+│     cbd_congestion_fee    │
+│                           │
+│          Filters:         │
+│      PULocationID=161     │
+│      fare_amount>30.0     │
+│                           │
+│       ~400,000 rows       │
+└───────────────────────────┘
+
+
+======================================================================
+DuckDB EXPLAIN - QUERY B - four columns
+======================================================================
+-- Query B: projection to four columns
+SELECT
+    tpep_pickup_datetime,
+    tpep_dropoff_datetime,
+    trip_distance,
+    fare_amount
+FROM read_parquet('data/taxi_2m.parquet')
+WHERE PULocationID = 161
+  AND fare_amount > 30.00;
+----------------------------------------------------------------------
+┌───────────────────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│    tpep_pickup_datetime   │
+│   tpep_dropoff_datetime   │
+│       trip_distance       │
+│        fare_amount        │
+│                           │
+│       ~400,000 rows       │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│        READ_PARQUET       │
+│    ────────────────────   │
+│         Function:         │
+│        READ_PARQUET       │
+│                           │
+│        Projections:       │
+│        fare_amount        │
+│    tpep_pickup_datetime   │
+│   tpep_dropoff_datetime   │
+│       trip_distance       │
+│                           │
+│          Filters:         │
+│      PULocationID=161     │
+│      fare_amount>30.0     │
+│                           │
+│       ~400,000 rows       │
+└───────────────────────────┘
+
