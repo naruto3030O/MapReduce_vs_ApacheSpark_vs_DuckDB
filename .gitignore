@@ -28,3 +28,5 @@ desktop.ini
 
 # Submission archive
 *.zip
+# Local AI usage log - required in the submission, not published
+ai/
